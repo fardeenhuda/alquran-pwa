@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Surah</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+a {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  color: green;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Surah Page</h2>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+document.write("<h3>Surah Number: " + params.get("no") + "</h3>");
+</script>
+
+<a href="index.html">⬅ Back</a>
+
+</body>
+</html>
