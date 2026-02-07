@@ -1,79 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Surah Index</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body{
-  margin:0;
+body {
   font-family: Arial, sans-serif;
+  margin: 0;
 }
-header{
-  background:#1e8e3e;
-  color:#fff;
-  padding:14px;
-  text-align:center;
-  font-size:20px;
-  font-weight:bold;
+.header {
+  background: #1e8e3e;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
 }
-.list{
-  padding:0;
-  margin:0;
+.list {
+  padding: 10px;
 }
-.item{
-  display:flex;
-  justify-content:space-between;
-  padding:12px 16px;
-  border-bottom:1px solid #eee;
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
 }
-.item a{
-  text-decoration:none;
-  color:#000;
-  width:100%;
-  display:flex;
-  justify-content:space-between;
+.row:hover {
+  background: #f5f5f5;
 }
-.left{
-  width:65%;
+.left {
+  color: #333;
 }
-.right{
-  direction:rtl;
-  font-size:18px;
-}
-.num{
-  color:#777;
-  margin-right:8px;
+.right {
+  font-family: 'Amiri', serif;
+  font-size: 18px;
 }
 </style>
 </head>
-
 <body>
 
-<header>Surah Index</header>
-
+<div class="header">Surah Index</div>
 <div class="list" id="list"></div>
 
 <script>
-const data = [
-["Al-Fatihah","الفاتحة"],["Al-Baqarah","البقرة"],["Aal-E-Imran","آل عمران"],
-["An-Nisa","النساء"],["Al-Ma'idah","المائدة"],["Al-An'am","الأنعام"],
-["Al-A'raf","الأعراف"],["Al-Anfal","الأنفال"],["At-Tawbah","التوبة"],
-["Yunus","يونس"],["Hud","هود"],["Yusuf","يوسف"],
-// (same pattern, ALL 114 already handled by number)
+const surahs = [
+"الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
+"هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
+"الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
+"لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر",
+"فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
+"الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
+"الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
+"نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس",
+"التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
+"الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات",
+"القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
+"المسد","الإخلاص","الفلق","الناس"
 ];
 
 const list = document.getElementById("list");
 
-for(let i=1;i<=114;i++){
-  list.innerHTML += `
-  <div class="item">
-    <a href="surah.html?surah=${i}">
-      <div class="left"><span class="num">${i}</span> Surah ${i}</div>
-      <div class="right">${data[i-1]?.[1] || ""}</div>
-    </a>
-  </div>`;
-}
+surahs.forEach((name, i) => {
+  const row = document.createElement("div");
+  row.className = "row";
+  row.onclick = () => {
+    window.location.href = `surah.html?surah=${i+1}`;
+  };
+  row.innerHTML = `
+    <div class="left">${i+1}. Surah ${i+1}</div>
+    <div class="right">${name}</div>
+  `;
+  list.appendChild(row);
+});
 </script>
 
 </body>
