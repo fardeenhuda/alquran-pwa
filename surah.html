@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Surah</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: 'Amiri Quran', serif;
+  direction: rtl;
+  text-align: right;
+  margin: 0;
+}
+.header {
+  background: #1e8e3e;
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.back {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.content {
+  padding: 15px;
+  font-size: 22px;
+  line-height: 2.4;
+}
+.ayah {
+  display: inline;
+}
+.num {
+  border: 1px solid #000;
+  border-radius: 50%;
+  padding: 2px 8px;
+  margin: 0 4px;
+  font-size: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="back" onclick="history.back()">← Back</div>
+  <div style="margin:auto;">القرآن الكريم</div>
+</div>
+
+<div class="content" id="content">Loading…</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const surah = params.get("surah");
+
+fetch(`surah${surah}.txt`)
+.then(r => r.text())
+.then(t => {
+  const ayahs = t.trim().split("\n");
+  let html = "";
+  ayahs.forEach((a,i)=>{
+    html += `<span class="ayah">${a}<span class="num">${i+1}</span></span> `;
+  });
+  document.getElementById("content").innerHTML = html;
+});
+</script>
+
+</body>
+</html>
