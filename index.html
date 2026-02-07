@@ -2,48 +2,48 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>Al Quran</title>
+  <title>القرآن الكريم</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: serif;
+      font-family: "Scheherazade New", serif;
       background: #fff;
-      margin: 0;
-      padding: 20px;
+      color: #000;
+      padding: 16px;
+      line-height: 2;
     }
     h1 {
       text-align: center;
+      font-size: 32px;
+      margin-bottom: 20px;
     }
-    .surah {
-      padding: 15px;
-      border-bottom: 1px solid #ddd;
+    .ayah {
+      margin-bottom: 10px;
       font-size: 22px;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
 <h1>القرآن الكريم</h1>
-
-<div class="surah" onclick="openSurah('fatiha')">سورة الفاتحة</div>
-<div class="surah" onclick="openSurah('sajdah')">سورة السجدة</div>
+<div id="content">Loading Quran...</div>
 
 <script>
-function openSurah(name) {
-  if (name === 'fatiha') {
-    document.body.innerHTML = `
-      <h1>سورة الفاتحة</h1>
-      <p>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-      <p>الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ</p>
-      <p>الرَّحْمَٰنِ الرَّحِيمِ</p>
-      <p>مَالِكِ يَوْمِ الدِّينِ</p>
-      <p>إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ</p>
-      <p>اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ</p>
-      <p>صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ</p>
-    `;
-  }
-}
+fetch("quran.txt")
+  .then(res => res.text())
+  .then(text => {
+    const lines = text.split("\n");
+    let html = "";
+    lines.forEach(line => {
+      if (line.trim() !== "") {
+        html += `<div class="ayah">${line}</div>`;
+      }
+    });
+    document.getElementById("content").innerHTML = html;
+  })
+  .catch(err => {
+    document.getElementById("content").innerText = "Error loading Quran text";
+  });
 </script>
 
 </body>
