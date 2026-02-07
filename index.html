@@ -1,54 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>القرآن الكريم</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: "Scheherazade New", serif;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  text-align: center;
+  padding: 16px;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+li {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  text-align: right;
+  font-size: 20px;
+}
+li:hover {
+  background: #f5f5f5;
+}
+#content {
+  padding: 16px;
+  display: none;
+}
+.ayah {
+  font-size: 22px;
+  line-height: 2;
+  text-align: right;
+  margin-bottom: 10px;
+}
+.back {
+  margin-bottom: 15px;
+  display: inline-block;
+  cursor: pointer;
+  color: blue;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="title">القرآن الكريم</h1>
+
+<ul id="surahList"></ul>
+
+<div id="content">
+  <div class="back" onclick="showList()">← الرجوع</div>
+  <div id="ayahs"></div>
+</div>
+
 <script>
 fetch("quran.txt")
-.then(r=>r.text())
-.then(text=>{
-  const lines=text.split("\n");
-  const quran=document.getElementById("quran");
-  const list=document.getElementById("surahList");
+.then(res => res.text())
+.then(text => {
+  const lines = text.split("\n").filter(l => l.trim() && !l.startsWith("#"));
+  const quran = {};
 
-  let surahData={};
+  lines.forEach(line => {
+    const parts = line.split("|");
+    if (parts.length >= 3) {
+      const surah = parts[0].trim();
+      const ayah = parts[1].trim();
+      const text = parts.slice(2).join("|").trim();
 
-  for(let line of lines){
-    if(line.startsWith("# PLEASE DO NOT REMOVE")) break;
-    if(!line.trim()) continue;
-
-    const p=line.split("|");
-    if(p.length<3) continue;
-
-    const s=p[0], a=p[1], t=p[2];
-
-    if(!surahData[s]) surahData[s]=[];
-    surahData[s].push({a,t});
-  }
-
-  // Surah List
-  Object.keys(surahData).forEach(s=>{
-    const div=document.createElement("div");
-    div.className="surah";
-    div.textContent="سورة "+s;
-    div.onclick=()=>openSurah(s);
-    list.appendChild(div);
+      if (!quran[surah]) quran[surah] = [];
+      quran[surah].push({ ayah, text });
+    }
   });
 
-  function openSurah(s){
-    list.style.display="none";
-    quran.innerHTML="";
+  const list = document.getElementById("surahList");
 
-    const back=document.createElement("div");
-    back.className="surah";
-    back.textContent="⬅ الرجوع إلى القائمة";
-    back.onclick=()=>{
-      quran.innerHTML="";
-      list.style.display="block";
-    };
-    quran.appendChild(back);
+  Object.keys(quran).forEach(surah => {
+    const li = document.createElement("li");
+    li.textContent = "سورة " + surah;
+    li.onclick = () => openSurah(surah, quran[surah]);
+    list.appendChild(li);
+  });
 
-    surahData[s].forEach(v=>{
-      const ay=document.createElement("div");
-      ay.className="ayah";
-      ay.innerHTML=`<span class="num">${s}|${v.a}</span> ${v.t}`;
-      quran.appendChild(ay);
+  window.openSurah = function(surah, ayahs) {
+    document.getElementById("surahList").style.display = "none";
+    document.getElementById("content").style.display = "block";
+    document.getElementById("title").textContent = "سورة " + surah;
+
+    const container = document.getElementById("ayahs");
+    container.innerHTML = "";
+
+    ayahs.forEach(a => {
+      const div = document.createElement("div");
+      div.className = "ayah";
+      div.textContent = a.text;
+      container.appendChild(div);
     });
+
+    window.scrollTo(0,0);
+  }
+
+  window.showList = function() {
+    document.getElementById("content").style.display = "none";
+    document.getElementById("surahList").style.display = "block";
+    document.getElementById("title").textContent = "القرآن الكريم";
+    window.scrollTo(0,0);
   }
 });
 </script>
+
+</body>
+</html>
