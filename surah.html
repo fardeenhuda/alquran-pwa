@@ -1,33 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <title>Surah</title>
-
 <style>
 body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+  font-family: 'Amiri', serif;
+  margin: 0;
+  padding: 15px;
+  background: #fff;
+  direction: rtl;
 }
-a {
-  display: inline-block;
-  margin-top: 20px;
-  text-decoration: none;
-  color: green;
+header {
+  background: #1e9c5b;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-size: 18px;
+}
+.ayah {
+  margin: 12px 0;
+  font-size: 22px;
+  line-height: 2;
+}
+.num {
+  color: #1e9c5b;
+  font-size: 16px;
 }
 </style>
 </head>
 
 <body>
 
-<h2>Surah Page</h2>
+<header id="title">سورة</header>
+<div id="content"></div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
-document.write("<h3>Surah Number: " + params.get("no") + "</h3>");
-</script>
+const surahNo = params.get("no");
 
-<a href="index.html">⬅ Back</a>
+fetch("quran.txt")
+  .then(res => res.text())
+  .then(text => {
+    const lines = text.split("\n");
+    let html = "";
+    lines.forEach(line => {
+      if (line.startsWith(surahNo + "|")) {
+        const parts = line.split("|");
+        html += `<div class="ayah">${parts[2]} <span class="num">﴿${parts[1]}﴾</span></div>`;
+      }
+    });
+    document.getElementById("content").innerHTML = html || "No data found";
+    document.getElementById("title").innerText = "سورة رقم " + surahNo;
+  });
+</script>
 
 </body>
 </html>
