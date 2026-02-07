@@ -18,30 +18,32 @@ body {
 header {
   background: #1b8a3d;
   color: white;
-  padding: 12px;
+  padding: 14px;
   font-size: 18px;
   text-align: center;
+  position: sticky;
+  top: 0;
 }
 
-a.back {
+.back {
   position: absolute;
-  left: 10px;
-  top: 12px;
+  left: 12px;
+  top: 14px;
   color: white;
   text-decoration: none;
   font-size: 14px;
 }
 
 .ayah {
-  font-size: 22px;
-  line-height: 2.4;
+  font-size: 28px;   /* 👈 BIG & READABLE */
+  line-height: 2.6;
 }
 
-.ayah-number {
-  border: 1px solid black;
+.num {
+  border: 1px solid #000;
   border-radius: 50%;
-  padding: 2px 7px;
-  font-size: 14px;
+  padding: 2px 8px;
+  font-size: 16px;
   margin: 0 6px;
 }
 </style>
@@ -57,19 +59,37 @@ a.back {
 <div id="content"></div>
 
 <script>
-const surah = new URLSearchParams(window.location.search).get("s");
+const surahNo = Number(new URLSearchParams(location.search).get("s"));
 
 fetch("quran.txt")
-  .then(res => res.text())
-  .then(text => {
-    const all = text.split(/(?=سُورَةُ)/g);
-    const data = all[surah - 1];
+.then(r => r.text())
+.then(text => {
 
-    document.getElementById("content").innerHTML =
-      data
-        .replace(/\n/g, "<br>")
-        .replace(/۝\s*(\d+)/g, ' <span class="ayah-number">$1</span>');
-  });
+  // each surah starts with "سورة"
+  const surahs = text.split(/\n(?=سورة )/);
+  let surahText = surahs[surahNo - 1];
+
+  if (!surahText) {
+    document.getElementById("content").innerHTML = "Surah not found";
+    return;
+  }
+
+  // remove first line (surah title)
+  surahText = surahText.split("\n").slice(1).join("\n");
+
+  // remove bismillah if present
+  surahText = surahText.replace(/^بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\s*/,"");
+
+  // Arabic numbers
+  const toArabic = n => n.replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+
+  let i = 1;
+  surahText = surahText.replace(/\n/g, " ");
+  surahText = surahText.replace(/۝/g, () => `<span class="num">${toArabic(String(i++))}</span>`);
+
+  document.getElementById("content").innerHTML =
+    `<div class="ayah">${surahText}</div>`;
+});
 </script>
 
 </body>
