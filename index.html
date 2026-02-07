@@ -1,72 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>Al-Qur’an</title>
+<title>القرآن الكريم</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
+
 <style>
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Amiri Quran', serif;
   margin: 0;
-  background: #f5f5f5;
+  background: #fff;
 }
+
 header {
-  background: #1e9c5b;
+  background: #1e9e5a;
   color: white;
   text-align: center;
-  padding: 15px;
-  font-size: 20px;
+  padding: 12px;
+  font-size: 22px;
 }
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+
+.surah {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
 }
-li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px;
-  border-bottom: 1px solid #ddd;
-  background: white;
+
+.num {
+  color: #666;
 }
-a {
-  text-decoration: none;
-  color: black;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
+
 .en {
   text-align: left;
 }
+
 .ar {
-  font-size: 20px;
-  direction: rtl;
   text-align: right;
-}
-.num {
-  width: 30px;
-  color: #777;
+  direction: rtl;
 }
 </style>
 </head>
 
 <body>
 <header>القرآن الكريم</header>
+<div id="list"></div>
 
-<ul>
-  <li><a href="surah.html?no=1"><span class="num">1</span><span class="en">Al-Fātiḥah</span><span class="ar">الفاتحة</span></a></li>
-  <li><a href="surah.html?no=2"><span class="num">2</span><span class="en">Al-Baqarah</span><span class="ar">البقرة</span></a></li>
-  <li><a href="surah.html?no=3"><span class="num">3</span><span class="en">Āl-ʿImrān</span><span class="ar">آل عمران</span></a></li>
-  <li><a href="surah.html?no=4"><span class="num">4</span><span class="en">An-Nisāʾ</span><span class="ar">النساء</span></a></li>
-  <li><a href="surah.html?no=5"><span class="num">5</span><span class="en">Al-Māʾidah</span><span class="ar">المائدة</span></a></li>
-  <li><a href="surah.html?no=6"><span class="num">6</span><span class="en">Al-Anʿām</span><span class="ar">الأنعام</span></a></li>
-  <li><a href="surah.html?no=7"><span class="num">7</span><span class="en">Al-Aʿrāf</span><span class="ar">الأعراف</span></a></li>
-  <li><a href="surah.html?no=8"><span class="num">8</span><span class="en">Al-Anfāl</span><span class="ar">الأنفال</span></a></li>
-  <li><a href="surah.html?no=9"><span class="num">9</span><span class="en">At-Tawbah</span><span class="ar">التوبة</span></a></li>
-  <li><a href="surah.html?no=10"><span class="num">10</span><span class="en">Yūnus</span><span class="ar">يونس</span></a></li>
-  <!-- isi pattern pe 114 tak add ho jayega -->
-</ul>
+<script>
+const surahs = [
+["Al-Fātiḥah","الفاتحة"],["Al-Baqarah","البقرة"],["Āl-ʿImrān","آل عمران"],
+["An-Nisā’","النساء"],["Al-Mā’idah","المائدة"],["Al-Anʿām","الأنعام"],
+["Al-Aʿrāf","الأعراف"],["Al-Anfāl","الأنفال"],["At-Tawbah","التوبة"],
+["Yūnus","يونس"],["Hūd","هود"],["Yūsuf","يوسف"],["Ar-Raʿd","الرعد"],
+["Ibrāhīm","إبراهيم"],["Al-Ḥijr","الحجر"],["An-Naḥl","النحل"],
+["Al-Isrā’","الإسراء"],["Al-Kahf","الكهف"],["Maryam","مريم"],
+["Ṭā-Hā","طه"],["Al-Anbiyā’","الأنبياء"],["Al-Ḥajj","الحج"],
+["Al-Mu’minūn","المؤمنون"],["An-Nūr","النور"],["Al-Furqān","الفرقان"],
+["Ash-Shuʿarā’","الشعراء"],["An-Naml","النمل"],["Al-Qaṣaṣ","القصص"],
+["Al-ʿAnkabūt","العنكبوت"],["Ar-Rūm","الروم"],["Luqmān","لقمان"],
+["As-Sajdah","السجدة"],["Al-Aḥzāb","الأحزاب"],["Saba’","سبأ"],
+["Fāṭir","فاطر"],["Yā-Sīn","يس"],["Aṣ-Ṣāffāt","الصافات"],
+["Ṣād","ص"],["Az-Zumar","الزمر"],["Ghāfir","غافر"],
+["Fuṣṣilat","فصلت"],["Ash-Shūrā","الشورى"],["Az-Zukhruf","الزخرف"],
+["Ad-Dukhān","الدخان"],["Al-Jāthiyah","الجاثية"],["Al-Aḥqāf","الأحقاف"],
+["Muḥammad","محمد"],["Al-Fatḥ","الفتح"],["Al-Ḥujurāt","الحجرات"],
+["Qāf","ق"],["Adh-Dhāriyāt","الذاريات"],["Aṭ-Ṭūr","الطور"],
+["An-Najm","النجم"],["Al-Qamar","القمر"],["Ar-Raḥmān","الرحمن"],
+["Al-Wāqiʿah","الواقعة"],["Al-Ḥadīd","الحديد"],["Al-Mujādilah","المجادلة"],
+["Al-Ḥashr","الحشر"],["Al-Mumtaḥanah","الممتحنة"],["Aṣ-Ṣaff","الصف"],
+["Al-Jumuʿah","الجمعة"],["Al-Munāfiqūn","المنافقون"],["At-Taghābun","التغابن"],
+["Aṭ-Ṭalāq","الطلاق"],["At-Taḥrīm","التحريم"],["Al-Mulk","الملك"],
+["Al-Qalam","القلم"],["Al-Ḥāqqah","الحاقة"],["Al-Maʿārij","المعارج"],
+["Nūḥ","نوح"],["Al-Jinn","الجن"],["Al-Muzzammil","المزمل"],
+["Al-Muddaththir","المدثر"],["Al-Qiyāmah","القيامة"],["Al-Insān","الإنسان"],
+["Al-Mursalāt","المرسلات"],["An-Naba’","النبأ"],["An-Nāziʿāt","النازعات"],
+["ʿAbasa","عبس"],["At-Takwīr","التكوير"],["Al-Infitar","الإنفطار"],
+["Al-Muṭaffifīn","المطففين"],["Al-Inshiqāq","الإنشقاق"],["Al-Burūj","البروج"],
+["Aṭ-Ṭāriq","الطارق"],["Al-Aʿlā","الأعلى"],["Al-Ghāshiyah","الغاشية"],
+["Al-Fajr","الفجر"],["Al-Balad","البلد"],["Ash-Shams","الشمس"],
+["Al-Layl","الليل"],["Aḍ-Ḍuḥā","الضحى"],["Ash-Sharḥ","الشرح"],
+["At-Tīn","التين"],["Al-ʿAlaq","العلق"],["Al-Qadr","القدر"],
+["Al-Bayyinah","البينة"],["Az-Zalzalah","الزلزلة"],["Al-ʿĀdiyāt","العاديات"],
+["Al-Qāriʿah","القارعة"],["At-Takāthur","التكاثر"],["Al-ʿAṣr","العصر"],
+["Al-Humazah","الهمزة"],["Al-Fīl","الفيل"],["Quraysh","قريش"],
+["Al-Māʿūn","الماعون"],["Al-Kawthar","الكوثر"],["Al-Kāfirūn","الكافرون"],
+["An-Naṣr","النصر"],["Al-Masad","المسد"],["Al-Ikhlāṣ","الإخلاص"],
+["Al-Falaq","الفلق"],["An-Nās","الناس"]
+];
 
+const list = document.getElementById("list");
+
+surahs.forEach((s,i)=>{
+  list.innerHTML += `
+    <div class="surah" onclick="location.href='surah.html?no=${i+1}&name=${s[1]}'">
+      <div class="num">${i+1}</div>
+      <div class="en">${s[0]}</div>
+      <div class="ar">${s[1]}</div>
+    </div>`;
+});
+</script>
 </body>
 </html>
