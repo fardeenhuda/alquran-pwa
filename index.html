@@ -34,11 +34,10 @@ fetch("quran.txt")
 .then(r=>r.text())
 .then(text=>{
   const lines=text.split("\n");
-  const quranDiv=document.getElementById("quran");
-  const surahDiv=document.getElementById("surahList");
+  const quran=document.getElementById("quran");
+  const list=document.getElementById("surahList");
 
   let currentSurah=null;
-  let surahContainer=null;
 
   for(let line of lines){
     if(line.startsWith("# PLEASE DO NOT REMOVE")) break;
@@ -52,22 +51,26 @@ fetch("quran.txt")
     if(currentSurah!==s){
       currentSurah=s;
 
-      // surah title (clickable)
+      // Surah container
+      const container=document.createElement("div");
+      container.id="surah-"+s;
+      quran.appendChild(container);
+
+      // Surah list item
       const sDiv=document.createElement("div");
       sDiv.className="surah";
       sDiv.textContent="سورة "+s;
-      sDiv.onclick=()=>surahContainer.scrollIntoView({behavior:"smooth"});
-      surahDiv.appendChild(sDiv);
-
-      // surah container
-      surahContainer=document.createElement("div");
-      quranDiv.appendChild(surahContainer);
+      sDiv.onclick=()=>{
+        document.getElementById("surah-"+s)
+          .scrollIntoView({behavior:"smooth"});
+      };
+      list.appendChild(sDiv);
     }
 
     const ayah=document.createElement("div");
     ayah.className="ayah";
     ayah.innerHTML=`<span class="num">${s}|${a}</span> ${t}`;
-    surahContainer.appendChild(ayah);
+    document.getElementById("surah-"+s).appendChild(ayah);
   }
 });
 </script>
