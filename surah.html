@@ -2,86 +2,55 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>سورة</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
-
+<title>Surah</title>
 <style>
 body {
-  font-family: 'Amiri Quran', serif;
-  margin: 0;
-  padding: 15px;
+  font-family: "Amiri Quran", serif;
   direction: rtl;
+  text-align: right;
+  margin: 0;
+  padding: 0;
 }
-
 header {
-  background: #1e9e5a;
+  background: #1f9d55;
   color: white;
-  padding: 10px;
+  padding: 12px;
   display: flex;
   justify-content: space-between;
 }
-
-a { color:white; text-decoration:none; }
-
-.ayah {
-  font-size: 24px;
-  line-height: 2.2;
-  margin: 15px 0;
+a {
+  color: white;
+  text-decoration: none;
 }
-
-.circle {
-  display:inline-flex;
-  width:32px;
-  height:32px;
-  border:2px solid #1e9e5a;
-  border-radius:50%;
-  align-items:center;
-  justify-content:center;
-  font-size:16px;
-  margin-right:8px;
+.content {
+  padding: 20px;
+}
+.bismillah {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+.ayah {
+  margin: 12px 0;
+  line-height: 2;
+}
+.num {
+  border: 1px solid #1f9d55;
+  border-radius: 50%;
+  padding: 4px 8px;
+  margin-left: 6px;
+  color: #1f9d55;
+  font-size: 14px;
 }
 </style>
 </head>
-
 <body>
+
 <header>
-<a href="index.html">← Back</a>
-<div id="title"></div>
+  <div id="surahName"></div>
+  <a href="index.html">Back</a>
 </header>
 
-<div id="content"></div>
-
-<script>
-const params = new URLSearchParams(location.search);
-const surahNo = params.get("no");
-const surahName = params.get("name");
-
-document.getElementById("title").innerText = surahName;
-
-function toArabic(num){
-  return num.toString().replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
-}
-
-fetch("quran.txt")
-.then(r=>r.text())
-.then(t=>{
-  const lines = t.split("\n");
-  const content = document.getElementById("content");
-  let ayahNo=1;
-
-  lines.forEach(l=>{
-    const [s,a,text]=l.split("|");
-    if(s==surahNo){
-      content.innerHTML += `
-        <div class="ayah">
-          ${text}
-          <span class="circle">${toArabic(ayahNo)}</span>
-        </div>`;
-      ayahNo++;
-    }
-  });
-});
-</script>
-</body>
-</html>
+<div class="content">
+  <div class="bismillah">
+    بِسْم
