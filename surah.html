@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Surah</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
+
+<style>
+body{
+  font-family:'Amiri Quran', serif;
+  background:#fff;
+  margin:0;
+  padding:20px;
+  direction:rtl;
+  text-align:right;
+}
+.ayah{
+  font-size:26px;
+  line-height:2.2;
+  margin-bottom:15px;
+}
+.ayah span{
+  display:inline-block;
+  width:28px;
+  height:28px;
+  line-height:28px;
+  border:1px solid #000;
+  border-radius:50%;
+  text-align:center;
+  font-size:14px;
+  margin-right:8px;
+}
+</style>
+</head>
+<body>
+
+<div id="quran">Loading...</div>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const surahNo = parseInt(urlParams.get('surah'));
+
+fetch('quran.txt')
+.then(res => res.text())
+.then(text => {
+  const lines = text.split('\n');
+  let html = '';
+  let ayahCount = 1;
+
+  lines.forEach(line => {
+    const parts = line.split('|');
+    const s = parseInt(parts[0]);
+    const ayahText = parts[2];
+
+    if(s === surahNo){
+      html += `<div class="ayah">${ayahText}<span>${ayahCount}</span></div>`;
+      ayahCount++;
+    }
+  });
+
+  document.getElementById('quran').innerHTML =
+    html || 'Surah not found';
+});
+</script>
+
+</body>
+</html>
