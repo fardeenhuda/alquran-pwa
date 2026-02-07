@@ -14,34 +14,33 @@ header {
   background: #1b8a3d;
   color: white;
   text-align: center;
-  padding: 12px;
+  padding: 14px;
   font-size: 18px;
 }
 
-.list {
-  width: 100%;
+a {
+  text-decoration: none;
+  color: black;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  padding: 12px;
+  padding: 14px;
   border-bottom: 1px solid #eee;
-  text-decoration: none;
-  color: black;
 }
 
 .row:hover {
-  background: #f5f5f5;
+  background: #f4f4f4;
 }
 
 .left {
-  color: #444;
+  color: #333;
 }
 
 .right {
-  font-family: serif;
   direction: rtl;
+  font-family: serif;
 }
 </style>
 </head>
@@ -50,22 +49,36 @@ header {
 
 <header>Surah Index</header>
 
-<div class="list">
-  <!-- 1 to 114 -->
-  <a class="row" href="surah.html?s=1"><span class="left">1. Surah 1</span><span class="right">الفاتحة</span></a>
-  <a class="row" href="surah.html?s=2"><span class="left">2. Surah 2</span><span class="right">البقرة</span></a>
-  <a class="row" href="surah.html?s=3"><span class="left">3. Surah 3</span><span class="right">آل عمران</span></a>
-  <a class="row" href="surah.html?s=4"><span class="left">4. Surah 4</span><span class="right">النساء</span></a>
-  <a class="row" href="surah.html?s=5"><span class="left">5. Surah 5</span><span class="right">المائدة</span></a>
-  <a class="row" href="surah.html?s=6"><span class="left">6. Surah 6</span><span class="right">الأنعام</span></a>
-  <a class="row" href="surah.html?s=7"><span class="left">7. Surah 7</span><span class="right">الأعراف</span></a>
-  <a class="row" href="surah.html?s=8"><span class="left">8. Surah 8</span><span class="right">الأنفال</span></a>
-  <a class="row" href="surah.html?s=9"><span class="left">9. Surah 9</span><span class="right">التوبة</span></a>
-  <a class="row" href="surah.html?s=10"><span class="left">10. Surah 10</span><span class="right">يونس</span></a>
+<div id="list"></div>
 
-  <!-- continue till 114 same pattern -->
-  <a class="row" href="surah.html?s=114"><span class="left">114. Surah 114</span><span class="right">الناس</span></a>
-</div>
+<script>
+const names = [
+"الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
+"هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
+"الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
+"لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر",
+"فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
+"الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
+"الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
+"نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس",
+"التكوير","الإنفطار","المطففين","الإنشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
+"الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات",
+"القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
+"المسد","الإخلاص","الفلق","الناس"
+];
+
+const list = document.getElementById("list");
+
+names.forEach((name, i) => {
+  list.innerHTML += `
+    <a href="surah.html?s=${i+1}">
+      <div class="row">
+        <span class="left">${i+1}. Surah ${i+1}</span>
+        <span class="right">${name}</span>
+      </div>
+    </a>`;
+});
+</script>
 
 </body>
 </html>
