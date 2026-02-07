@@ -3,48 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <title>القرآن الكريم</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
-      font-family: "Scheherazade New", serif;
-      background: #fff;
-      color: #000;
+      font-family: "Scheherazade New", "Amiri", serif;
+      background: #ffffff;
+      margin: 0;
       padding: 16px;
-      line-height: 2;
+      direction: rtl;
     }
+
     h1 {
       text-align: center;
       font-size: 32px;
       margin-bottom: 20px;
     }
+
     .ayah {
-      margin-bottom: 10px;
       font-size: 22px;
+      line-height: 2;
+      margin-bottom: 10px;
     }
   </style>
 </head>
+
 <body>
 
-<h1>القرآن الكريم</h1>
-<div id="content">Loading Quran...</div>
+  <h1>القرآن الكريم</h1>
 
-<script>
-fetch("quran.txt")
-  .then(res => res.text())
-  .then(text => {
-    const lines = text.split("\n");
-    let html = "";
-    lines.forEach(line => {
-      if (line.trim() !== "") {
-        html += `<div class="ayah">${line}</div>`;
-      }
-    });
-    document.getElementById("content").innerHTML = html;
-  })
-  .catch(err => {
-    document.getElementById("content").innerText = "Error loading Quran text";
-  });
-</script>
+  <div id="content">Loading Quran...</div>
+
+  <script>
+    fetch("quran.txt")
+      .then(response => response.text())
+      .then(text => {
+        const lines = text.split("\n");
+        let html = "";
+
+        lines.forEach(line => {
+          const clean = line.trim();
+
+          // Skip empty lines & copyright/comments
+          if (clean === "" || clean.startsWith("#")) return;
+
+          html += `<div class="ayah">${clean}</div>`;
+        });
+
+        document.getElementById("content").innerHTML = html;
+      })
+      .catch(error => {
+        document.getElementById("content").innerText =
+          "Error loading Quran text";
+        console.error(error);
+      });
+  </script>
 
 </body>
 </html>
