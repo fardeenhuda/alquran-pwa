@@ -1,82 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Surah Index</title>
+<title>Al Quran</title>
 
 <style>
 body {
+  font-family: Arial;
   margin: 0;
-  font-family: Arial, sans-serif;
 }
 
 header {
-  background: #1b8a3d;
+  background: green;
   color: white;
+  padding: 12px;
   text-align: center;
-  padding: 14px;
-  font-size: 18px;
+  font-size: 20px;
 }
 
-a {
-  text-decoration: none;
-  color: black;
-}
-
-.row {
+#container {
   display: flex;
-  justify-content: space-between;
-  padding: 14px;
+  height: calc(100vh - 50px);
+}
+
+#surahs {
+  width: 40%;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+#surahs div {
+  padding: 12px;
   border-bottom: 1px solid #eee;
+  cursor: pointer;
 }
 
-.row:hover {
-  background: #f4f4f4;
+#surahs div:hover {
+  background: #f2f2f2;
 }
 
-.left {
-  color: #333;
-}
-
-.right {
+#ayahs {
+  width: 60%;
+  padding: 20px;
   direction: rtl;
-  font-family: serif;
+  font-size: 26px;
+  line-height: 2.2;
+  overflow-y: auto;
 }
 </style>
 </head>
 
 <body>
 
-<header>Surah Index</header>
+<header>Al Qur'an (114 Surah)</header>
 
-<div id="list"></div>
+<div id="container">
+  <div id="surahs"></div>
+  <div id="ayahs">Surah select karo</div>
+</div>
 
 <script>
-const names = [
-"الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
-"هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
-"الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
-"لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر",
-"فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
-"الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
-"الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
-"نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس",
-"التكوير","الإنفطار","المطففين","الإنشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
-"الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات",
-"القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
-"المسد","الإخلاص","الفلق","الناس"
+const surahs = [
+  "Al-Fatihah","Al-Baqarah","Aal-E-Imran","An-Nisa","Al-Ma'idah","Al-An'am",
+  "Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim",
+  "Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Taha",
+  "...",
+  "An-Nas"
 ];
 
-const list = document.getElementById("list");
+const ayahs = {
+  0: ["بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ","الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ"],
+  1: ["الم","ذَٰلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ"]
+};
 
-names.forEach((name, i) => {
-  list.innerHTML += `
-    <a href="surah.html?s=${i+1}">
-      <div class="row">
-        <span class="left">${i+1}. Surah ${i+1}</span>
-        <span class="right">${name}</span>
-      </div>
-    </a>`;
+const surahBox = document.getElementById("surahs");
+const ayahBox = document.getElementById("ayahs");
+
+surahs.forEach((name, i) => {
+  const d = document.createElement("div");
+  d.innerText = (i+1) + ". " + name;
+  d.onclick = () => {
+    ayahBox.innerHTML = "";
+    (ayahs[i] || ["Text abhi add nahi hai"]).forEach(a => {
+      const p = document.createElement("p");
+      p.innerText = a;
+      ayahBox.appendChild(p);
+    });
+  };
+  surahBox.appendChild(d);
 });
 </script>
 
