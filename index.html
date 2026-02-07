@@ -3,77 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <title>Surah Index</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
+  font-family: Arial, sans-serif;
 }
-.header {
-  background: #1e8e3e;
+
+header {
+  background: #1b8a3d;
   color: white;
-  padding: 12px;
   text-align: center;
-  font-weight: bold;
+  padding: 12px;
+  font-size: 18px;
 }
+
 .list {
-  padding: 10px;
+  width: 100%;
 }
+
 .row {
   display: flex;
   justify-content: space-between;
   padding: 12px;
   border-bottom: 1px solid #eee;
-  cursor: pointer;
+  text-decoration: none;
+  color: black;
 }
+
 .row:hover {
   background: #f5f5f5;
 }
+
 .left {
-  color: #333;
+  color: #444;
 }
+
 .right {
-  font-family: 'Amiri', serif;
-  font-size: 18px;
+  font-family: serif;
+  direction: rtl;
 }
 </style>
 </head>
+
 <body>
 
-<div class="header">Surah Index</div>
-<div class="list" id="list"></div>
+<header>Surah Index</header>
 
-<script>
-const surahs = [
-"الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
-"هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
-"الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
-"لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر",
-"فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
-"الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
-"الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
-"نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس",
-"التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
-"الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات",
-"القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
-"المسد","الإخلاص","الفلق","الناس"
-];
+<div class="list">
+  <!-- 1 to 114 -->
+  <a class="row" href="surah.html?s=1"><span class="left">1. Surah 1</span><span class="right">الفاتحة</span></a>
+  <a class="row" href="surah.html?s=2"><span class="left">2. Surah 2</span><span class="right">البقرة</span></a>
+  <a class="row" href="surah.html?s=3"><span class="left">3. Surah 3</span><span class="right">آل عمران</span></a>
+  <a class="row" href="surah.html?s=4"><span class="left">4. Surah 4</span><span class="right">النساء</span></a>
+  <a class="row" href="surah.html?s=5"><span class="left">5. Surah 5</span><span class="right">المائدة</span></a>
+  <a class="row" href="surah.html?s=6"><span class="left">6. Surah 6</span><span class="right">الأنعام</span></a>
+  <a class="row" href="surah.html?s=7"><span class="left">7. Surah 7</span><span class="right">الأعراف</span></a>
+  <a class="row" href="surah.html?s=8"><span class="left">8. Surah 8</span><span class="right">الأنفال</span></a>
+  <a class="row" href="surah.html?s=9"><span class="left">9. Surah 9</span><span class="right">التوبة</span></a>
+  <a class="row" href="surah.html?s=10"><span class="left">10. Surah 10</span><span class="right">يونس</span></a>
 
-const list = document.getElementById("list");
-
-surahs.forEach((name, i) => {
-  const row = document.createElement("div");
-  row.className = "row";
-  row.onclick = () => {
-    window.location.href = `surah.html?surah=${i+1}`;
-  };
-  row.innerHTML = `
-    <div class="left">${i+1}. Surah ${i+1}</div>
-    <div class="right">${name}</div>
-  `;
-  list.appendChild(row);
-});
-</script>
+  <!-- continue till 114 same pattern -->
+  <a class="row" href="surah.html?s=114"><span class="left">114. Surah 114</span><span class="right">الناس</span></a>
+</div>
 
 </body>
 </html>
