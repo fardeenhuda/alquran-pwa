@@ -9,107 +9,116 @@
 <style>
 body{
   font-family:'Amiri Quran',serif;
-  background:#fff;
   margin:0;
-  padding:20px;
+  background:#fff;
   direction:rtl;
 }
 
-h1{
+header{
   text-align:center;
-  font-size:36px;
-  margin-bottom:20px;
+  font-size:34px;
+  padding:20px 10px;
 }
 
-.container{
-  max-width:700px;
+#app{
+  max-width:900px;
   margin:auto;
+  padding:0 16px 40px;
 }
 
-.surah-item{
-  padding:14px;
+/* Surah list */
+.surah{
+  padding:14px 6px;
   border-bottom:1px solid #eee;
-  cursor:pointer;
   font-size:22px;
-  text-align:right;
+  cursor:pointer;
 }
 
-.back-btn{
-  display:block;
-  margin:20px auto;
-  padding:6px 14px;
-  font-size:16px;
+/* Back button */
+.back{
+  position:fixed;
+  top:12px;
+  left:12px;
+  font-size:14px;
+  padding:6px 12px;
+  z-index:10;
 }
 
+/* Ayah view */
 .ayah{
-  font-size:28px;
-  line-height:2.8;
-  text-align:center;
+  font-size:30px;
+  line-height:2.4;
+  margin-bottom:12px;
+  text-align:justify;
 }
 
-.ayah-number{
+.ayah span{
   display:inline-flex;
   justify-content:center;
   align-items:center;
-  width:36px;
-  height:36px;
+  width:34px;
+  height:34px;
   border:2px solid #000;
   border-radius:50%;
-  font-size:18px;
-  margin-right:8px;
+  font-size:17px;
+  margin-right:6px;
+  white-space:nowrap;
 }
 </style>
 </head>
 
 <body>
 
-<h1>القرآن الكريم</h1>
-<div class="container" id="content">Loading…</div>
+<header>القرآن الكريم</header>
+<div id="app">Loading…</div>
 
 <script>
-function toArabicNumber(num){
-  return num.replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
+function arNum(n){
+  return n.replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
 }
 
 fetch("quran.txt")
 .then(r=>r.text())
-.then(text=>{
-  const lines=text.split("\n").filter(l=>l && !l.startsWith("#"));
-  const surahs={};
+.then(t=>{
+  const lines=t.split("\n").filter(l=>l && !l.startsWith("#"));
+  const s={};
 
   lines.forEach(l=>{
-    const [s,a,t]=l.split("|");
-    if(!surahs[s]) surahs[s]=[];
-    surahs[s].push({a,t});
+    const [sn,an,tx]=l.split("|");
+    if(!s[sn]) s[sn]=[];
+    s[sn].push({an,tx});
   });
 
-  const content=document.getElementById("content");
+  const app=document.getElementById("app");
 
   function list(){
-    content.innerHTML="";
-    Object.keys(surahs).forEach(s=>{
+    app.innerHTML="";
+    Object.keys(s).forEach(n=>{
       const d=document.createElement("div");
-      d.className="surah-item";
-      d.innerText="سورة "+toArabicNumber(s);
-      d.onclick=()=>open(s);
-      content.appendChild(d);
+      d.className="surah";
+      d.textContent="سورة "+arNum(n);
+      d.onclick=()=>open(n);
+      app.appendChild(d);
     });
+    window.scrollTo(0,0);
   }
 
-  function open(s){
-    content.innerHTML="";
+  function open(n){
+    app.innerHTML="";
     const b=document.createElement("button");
-    b.className="back-btn";
-    b.innerText="رجوع";
+    b.className="back";
+    b.textContent="← رجوع";
     b.onclick=list;
-    content.appendChild(b);
+    document.body.appendChild(b);
 
-    surahs[s].forEach(v=>{
+    s[n].forEach(v=>{
       const d=document.createElement("div");
       d.className="ayah";
-      d.innerHTML=`${v.t} <span class="ayah-number">${toArabicNumber(v.a)}</span>`;
-      content.appendChild(d);
+      d.innerHTML=`${v.tx} <span>${arNum(v.an)}</span>`;
+      app.appendChild(d);
     });
+
+    window.scrollTo({top:0,behavior:"smooth"});
   }
 
   list();
