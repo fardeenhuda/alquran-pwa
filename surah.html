@@ -2,76 +2,81 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>Qur'an</title>
+<title>Al-Qur'an</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body{
-  font-family: "Amiri Quran", serif;
   margin:0;
-  padding:20px;
+  padding:16px;
+  font-family:"Amiri Quran", serif;
   direction:rtl;
-  text-align:right;
 }
 header{
   background:#1e8e3e;
   color:#fff;
-  padding:12px;
+  padding:14px;
   text-align:center;
-  font-size:18px;
+  font-size:20px;
+  position:sticky;
+  top:0;
 }
 .back{
   position:absolute;
-  left:10px;
-  top:12px;
+  left:12px;
+  top:14px;
   color:#fff;
   text-decoration:none;
+  font-size:16px;
 }
 .ayah{
-  font-size:22px;
-  line-height:2;
+  font-size:30px; /* 👈 BIG FONT */
+  line-height:2.2;
+  margin-bottom:12px;
 }
 .num{
   display:inline-block;
   border:2px solid #000;
   border-radius:50%;
-  width:28px;
-  height:28px;
-  line-height:26px;
+  width:34px;
+  height:34px;
+  line-height:32px;
   text-align:center;
-  font-size:14px;
+  font-size:16px;
   margin:0 6px;
 }
 </style>
 </head>
+
 <body>
 
 <header>
-<a class="back" href="index.html">Back</a>
+<a class="back" href="index.html">← Back</a>
 القرآن الكريم
 </header>
 
 <div id="content">Loading...</div>
 
 <script>
-const params = new URLSearchParams(location.search);
-const surah = parseInt(params.get("surah"));
+const arabicNums = ["","١","٢","٣","٤","٥","٦","٧","٨","٩","١٠","١١","١٢","١٣","١٤","١٥","١٦","١٧","١٨","١٩","٢٠"];
+
+const surah = new URLSearchParams(location.search).get("surah");
 
 fetch("quran.txt")
 .then(r=>r.text())
-.then(text=>{
-  const lines = text.split("\n");
-  let out = "";
-  let ayah = 1;
-
-  lines.forEach(line=>{
-    if(line.startsWith(surah+"|")){
-      const parts = line.split("|");
-      out += `<div class="ayah">${parts[2]} <span class="num">${ayah}</span></div>`;
-      ayah++;
+.then(t=>{
+  let out="";
+  let ayah=0;
+  t.split("\n").forEach(l=>{
+    if(l.startsWith(surah+"|")){
+      const p=l.split("|");
+      if(!(surah!=1 && ayah==0)) { // ❌ skip bismillah count
+        ayah++;
+        out+=`<div class="ayah">${p[2]} <span class="num">${arabicNums[ayah] || ayah}</span></div>`;
+      }
     }
   });
-
-  document.getElementById("content").innerHTML = out || "No data";
+  document.getElementById("content").innerHTML=out;
 });
 </script>
 
