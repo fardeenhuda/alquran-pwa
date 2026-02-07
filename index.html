@@ -1,68 +1,56 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>القرآن الكريم</title>
+<title>Al-Qur'an</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
 
 <style>
 body{
-  font-family:'Amiri Quran',serif;
   margin:0;
+  font-family:Arial, sans-serif;
   background:#fff;
-  direction:rtl;
 }
 
 header{
+  background:#0f9d58;
+  color:white;
   text-align:center;
-  font-size:34px;
-  padding:20px 10px;
-}
-
-#app{
-  max-width:900px;
-  margin:auto;
-  padding:0 16px 40px;
-}
-
-/* Surah list */
-.surah{
-  padding:14px 6px;
-  border-bottom:1px solid #eee;
+  padding:15px;
   font-size:22px;
-  cursor:pointer;
 }
 
-/* Back button */
-.back{
-  position:fixed;
-  top:12px;
-  left:12px;
-  font-size:14px;
-  padding:6px 12px;
-  z-index:10;
+.container{
+  padding:5px 10px;
 }
 
-/* Ayah view */
-.ayah{
-  font-size:30px;
-  line-height:2.4;
-  margin-bottom:12px;
-  text-align:justify;
-}
-
-.ayah span{
-  display:inline-flex;
-  justify-content:center;
+.surah{
+  display:flex;
   align-items:center;
-  width:34px;
-  height:34px;
-  border:2px solid #000;
-  border-radius:50%;
-  font-size:17px;
-  margin-right:6px;
-  white-space:nowrap;
+  padding:14px 8px;
+  border-bottom:1px solid #eee;
+}
+
+.num{
+  width:10%;
+  text-align:center;
+  font-size:16px;
+  color:#555;
+}
+
+.surah-en{
+  width:45%;
+  font-size:18px;
+  text-align:left;
+}
+
+.surah-ar{
+  width:45%;
+  font-size:28px;
+  font-family:'Amiri', serif;
+  direction:rtl;
+  text-align:right;
 }
 </style>
 </head>
@@ -70,58 +58,136 @@ header{
 <body>
 
 <header>القرآن الكريم</header>
-<div id="app">Loading…</div>
+
+<div class="container" id="list"></div>
 
 <script>
-function arNum(n){
-  return n.replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
-}
+const surahs = [
+["Al-Fātiḥah","الفاتحة"],
+["Al-Baqarah","البقرة"],
+["Āl-ʿImrān","آل عمران"],
+["An-Nisā’","النساء"],
+["Al-Mā’idah","المائدة"],
+["Al-An‘ām","الأنعام"],
+["Al-A‘rāf","الأعراف"],
+["Al-Anfāl","الأنفال"],
+["At-Tawbah","التوبة"],
+["Yūnus","يونس"],
+["Hūd","هود"],
+["Yūsuf","يوسف"],
+["Ar-Ra‘d","الرعد"],
+["Ibrāhīm","إبراهيم"],
+["Al-Ḥijr","الحجر"],
+["An-Naḥl","النحل"],
+["Al-Isrā’","الإسراء"],
+["Al-Kahf","الكهف"],
+["Maryam","مريم"],
+["Ṭā-Hā","طه"],
+["Al-Anbiyā’","الأنبياء"],
+["Al-Ḥajj","الحج"],
+["Al-Mu’minūn","المؤمنون"],
+["An-Nūr","النور"],
+["Al-Furqān","الفرقان"],
+["Ash-Shu‘arā’","الشعراء"],
+["An-Naml","النمل"],
+["Al-Qaṣaṣ","القصص"],
+["Al-‘Ankabūt","العنكبوت"],
+["Ar-Rūm","الروم"],
+["Luqmān","لقمان"],
+["As-Sajdah","السجدة"],
+["Al-Aḥzāb","الأحزاب"],
+["Saba’","سبإ"],
+["Fāṭir","فاطر"],
+["Yā-Sīn","يس"],
+["Aṣ-Ṣāffāt","الصافات"],
+["Ṣād","ص"],
+["Az-Zumar","الزمر"],
+["Ghāfir","غافر"],
+["Fuṣṣilat","فصلت"],
+["Ash-Shūrā","الشورى"],
+["Az-Zukhruf","الزخرف"],
+["Ad-Dukhān","الدخان"],
+["Al-Jāthiyah","الجاثية"],
+["Al-Aḥqāf","الأحقاف"],
+["Muḥammad","محمد"],
+["Al-Fatḥ","الفتح"],
+["Al-Ḥujurāt","الحجرات"],
+["Qāf","ق"],
+["Adh-Dhāriyāt","الذاريات"],
+["Aṭ-Ṭūr","الطور"],
+["An-Najm","النجم"],
+["Al-Qamar","القمر"],
+["Ar-Raḥmān","الرحمن"],
+["Al-Wāqi‘ah","الواقعة"],
+["Al-Ḥadīd","الحديد"],
+["Al-Mujādilah","المجادلة"],
+["Al-Ḥashr","الحشر"],
+["Al-Mumtaḥanah","الممتحنة"],
+["Aṣ-Ṣaff","الصف"],
+["Al-Jumu‘ah","الجمعة"],
+["Al-Munāfiqūn","المنافقون"],
+["At-Taghābun","التغابن"],
+["Aṭ-Ṭalāq","الطلاق"],
+["At-Taḥrīm","التحريم"],
+["Al-Mulk","الملك"],
+["Al-Qalam","القلم"],
+["Al-Ḥāqqah","الحاقة"],
+["Al-Ma‘ārij","المعارج"],
+["Nūḥ","نوح"],
+["Al-Jinn","الجن"],
+["Al-Muzzammil","المزمل"],
+["Al-Muddaththir","المدثر"],
+["Al-Qiyāmah","القيامة"],
+["Al-Insān","الإنسان"],
+["Al-Mursalāt","المرسلات"],
+["An-Naba’","النبأ"],
+["An-Nāzi‘āt","النازعات"],
+["‘Abasa","عبس"],
+["At-Takwīr","التكوير"],
+["Al-Infiṭār","الانفطار"],
+["Al-Muṭaffifīn","المطففين"],
+["Al-Inshiqāq","الانشقاق"],
+["Al-Burūj","البروج"],
+["Aṭ-Ṭāriq","الطارق"],
+["Al-A‘lā","الأعلى"],
+["Al-Ghāshiyah","الغاشية"],
+["Al-Fajr","الفجر"],
+["Al-Balad","البلد"],
+["Ash-Shams","الشمس"],
+["Al-Layl","الليل"],
+["Aḍ-Ḍuḥā","الضحى"],
+["Ash-Sharḥ","الشرح"],
+["At-Tīn","التين"],
+["Al-‘Alaq","العلق"],
+["Al-Qadr","القدر"],
+["Al-Bayyinah","البينة"],
+["Az-Zalzalah","الزلزلة"],
+["Al-‘Ādiyāt","العاديات"],
+["Al-Qāri‘ah","القارعة"],
+["At-Takāthur","التكاثر"],
+["Al-‘Aṣr","العصر"],
+["Al-Humazah","الهمزة"],
+["Al-Fīl","الفيل"],
+["Quraysh","قريش"],
+["Al-Mā‘ūn","الماعون"],
+["Al-Kawthar","الكوثر"],
+["Al-Kāfirūn","الكافرون"],
+["An-Naṣr","النصر"],
+["Al-Masad","المسد"],
+["Al-Ikhlāṣ","الإخلاص"],
+["Al-Falaq","الفلق"],
+["An-Nās","الناس"]
+];
 
-fetch("quran.txt")
-.then(r=>r.text())
-.then(t=>{
-  const lines=t.split("\n").filter(l=>l && !l.startsWith("#"));
-  const s={};
+const list = document.getElementById("list");
 
-  lines.forEach(l=>{
-    const [sn,an,tx]=l.split("|");
-    if(!s[sn]) s[sn]=[];
-    s[sn].push({an,tx});
-  });
-
-  const app=document.getElementById("app");
-
-  function list(){
-    app.innerHTML="";
-    Object.keys(s).forEach(n=>{
-      const d=document.createElement("div");
-      d.className="surah";
-      d.textContent="سورة "+arNum(n);
-      d.onclick=()=>open(n);
-      app.appendChild(d);
-    });
-    window.scrollTo(0,0);
-  }
-
-  function open(n){
-    app.innerHTML="";
-    const b=document.createElement("button");
-    b.className="back";
-    b.textContent="← رجوع";
-    b.onclick=list;
-    document.body.appendChild(b);
-
-    s[n].forEach(v=>{
-      const d=document.createElement("div");
-      d.className="ayah";
-      d.innerHTML=`${v.tx} <span>${arNum(v.an)}</span>`;
-      app.appendChild(d);
-    });
-
-    window.scrollTo({top:0,behavior:"smooth"});
-  }
-
-  list();
+surahs.forEach((s,i)=>{
+  list.innerHTML += `
+  <div class="surah">
+    <div class="num">${i+1}</div>
+    <div class="surah-en">${s[0]}</div>
+    <div class="surah-ar">${s[1]}</div>
+  </div>`;
 });
 </script>
 
