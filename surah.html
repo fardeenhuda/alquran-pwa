@@ -2,66 +2,74 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>Surah</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>القرآن الكريم</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
+
 <style>
 body {
+  margin: 0;
+  padding: 16px;
   font-family: 'Amiri Quran', serif;
   direction: rtl;
   text-align: right;
-  margin: 0;
 }
-.header {
-  background: #1e8e3e;
+
+header {
+  background: #1b8a3d;
   color: white;
-  padding: 10px;
-  display: flex;
-  align-items: center;
+  padding: 12px;
+  font-size: 18px;
+  text-align: center;
 }
-.back {
-  margin-left: 10px;
-  cursor: pointer;
+
+a.back {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
 }
-.content {
-  padding: 15px;
+
+.ayah {
   font-size: 22px;
   line-height: 2.4;
 }
-.ayah {
-  display: inline;
-}
-.num {
-  border: 1px solid #000;
+
+.ayah-number {
+  border: 1px solid black;
   border-radius: 50%;
-  padding: 2px 8px;
-  margin: 0 4px;
-  font-size: 16px;
+  padding: 2px 7px;
+  font-size: 14px;
+  margin: 0 6px;
 }
 </style>
 </head>
+
 <body>
 
-<div class="header">
-  <div class="back" onclick="history.back()">← Back</div>
-  <div style="margin:auto;">القرآن الكريم</div>
-</div>
+<header>
+  <a class="back" href="index.html">← Back</a>
+  القرآن الكريم
+</header>
 
-<div class="content" id="content">Loading…</div>
+<div id="content"></div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const surah = params.get("surah");
+const surah = new URLSearchParams(window.location.search).get("s");
 
-fetch(`surah${surah}.txt`)
-.then(r => r.text())
-.then(t => {
-  const ayahs = t.trim().split("\n");
-  let html = "";
-  ayahs.forEach((a,i)=>{
-    html += `<span class="ayah">${a}<span class="num">${i+1}</span></span> `;
+fetch("quran.txt")
+  .then(res => res.text())
+  .then(text => {
+    const all = text.split(/(?=سُورَةُ)/g);
+    const data = all[surah - 1];
+
+    document.getElementById("content").innerHTML =
+      data
+        .replace(/\n/g, "<br>")
+        .replace(/۝\s*(\d+)/g, ' <span class="ayah-number">$1</span>');
   });
-  document.getElementById("content").innerHTML = html;
-});
 </script>
 
 </body>
