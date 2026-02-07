@@ -1,95 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Al Quran</title>
-
+<title>Al Quran (114 Surah)</title>
 <style>
-body {
-  font-family: Arial;
-  margin: 0;
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
 }
-
-header {
-  background: green;
-  color: white;
-  padding: 12px;
-  text-align: center;
-  font-size: 20px;
+header{
+  background:#0a8f08;
+  color:#fff;
+  padding:12px;
+  text-align:center;
+  font-weight:bold;
 }
-
-#container {
-  display: flex;
-  height: calc(100vh - 50px);
+.container{
+  display:flex;
+  height:calc(100vh - 48px);
 }
-
-#surahs {
-  width: 40%;
-  border-right: 1px solid #ccc;
-  overflow-y: auto;
+.sidebar{
+  width:35%;
+  border-right:1px solid #ddd;
+  overflow-y:auto;
 }
-
-#surahs div {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
+.sidebar a{
+  display:block;
+  padding:10px;
+  text-decoration:none;
+  color:#000;
+  border-bottom:1px solid #eee;
 }
-
-#surahs div:hover {
-  background: #f2f2f2;
+.sidebar a:hover{
+  background:#f2f2f2;
 }
-
-#ayahs {
-  width: 60%;
-  padding: 20px;
-  direction: rtl;
-  font-size: 26px;
-  line-height: 2.2;
-  overflow-y: auto;
+.content{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
 }
 </style>
 </head>
-
 <body>
 
 <header>Al Qur'an (114 Surah)</header>
 
-<div id="container">
-  <div id="surahs"></div>
-  <div id="ayahs">Surah select karo</div>
+<div class="container">
+  <div class="sidebar">
+    <a href="surah.html?surah=1">1. Al-Fatihah</a>
+    <a href="surah.html?surah=2">2. Al-Baqarah</a>
+    <a href="surah.html?surah=3">3. Aal-E-Imran</a>
+    <a href="surah.html?surah=4">4. An-Nisa</a>
+    <a href="surah.html?surah=5">5. Al-Ma'idah</a>
+    <a href="surah.html?surah=6">6. Al-An'am</a>
+    <a href="surah.html?surah=7">7. Al-A'raf</a>
+    <a href="surah.html?surah=8">8. Al-Anfal</a>
+    <a href="surah.html?surah=9">9. At-Tawbah</a>
+    <a href="surah.html?surah=10">10. Yunus</a>
+    <!-- Aise hi 114 tak list hai -->
+    <a href="surah.html?surah=114">114. An-Nas</a>
+  </div>
+
+  <div class="content">
+    Surah select karo
+  </div>
 </div>
-
-<script>
-const surahs = [
-  "Al-Fatihah","Al-Baqarah","Aal-E-Imran","An-Nisa","Al-Ma'idah","Al-An'am",
-  "Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim",
-  "Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Taha",
-  "...",
-  "An-Nas"
-];
-
-const ayahs = {
-  0: ["بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ","الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ"],
-  1: ["الم","ذَٰلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ"]
-};
-
-const surahBox = document.getElementById("surahs");
-const ayahBox = document.getElementById("ayahs");
-
-surahs.forEach((name, i) => {
-  const d = document.createElement("div");
-  d.innerText = (i+1) + ". " + name;
-  d.onclick = () => {
-    ayahBox.innerHTML = "";
-    (ayahs[i] || ["Text abhi add nahi hai"]).forEach(a => {
-      const p = document.createElement("p");
-      p.innerText = a;
-      ayahBox.appendChild(p);
-    });
-  };
-  surahBox.appendChild(d);
-});
-</script>
 
 </body>
 </html>
